@@ -1,5 +1,7 @@
 import pytest
 from pythoncode.calculator import Calculator
+import math
+from math import pow
 
 
 class TestCalc:
@@ -29,15 +31,21 @@ class TestCalc:
                              ids=['minus1', 'minus2'])
     def test_add_minus(self, a, b, expect):
         result = self.calc.add(a, b)
-        assert round(result, 2) == expect
-
-    @pytest.mark.parametrize('a,b,expect', [[10, 5, 2], [1, 3, 1 / 3], [0.1, 0.2, 0.5]],
-                             ids=['可整除', '无法整除', '小数'])
-    def test_div(self, a, b, expect):
-        result = self.calc.div(a, b)
         assert result == expect
 
-    @pytest.mark.parametrize('a,b', [[10, 0], [0.1, 0]], ids=['除数为0', '除数为0'])
+    @pytest.mark.parametrize('a,b,expect', [[pow(2, 1 / 2), -1, 0.41], [pow(2, 1 / 2), pow(2, 1 / 2), 2.83]],
+                             ids=['radical and minus', 'radical'])
+    def test_add_radical(self, a, b, expect):
+        result = self.calc.add(a, b)
+        assert round(result, 2) == expect
+
+    @pytest.mark.parametrize('a,b,expect', [[10, 5, 2], [1, 3, 0.33], [0.1, 0.2, 0.5]],
+                             ids=[' Divisible', 'not  Divisible', 'decimal'])
+    def test_div(self, a, b, expect):
+        result = self.calc.div(a, b)
+        assert round(result, 2) == expect
+
+    @pytest.mark.parametrize('a,b', [[10, 0], [0.1, 0]], ids=['integer divided by 0', 'decimal divided by 0'])
     def test_div_zero(self, a, b):
         with pytest.raises(ZeroDivisionError):
             self.calc.div(a, b)
