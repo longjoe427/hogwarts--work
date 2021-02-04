@@ -41,3 +41,5 @@ class TestDemo:
 
     def test_demo2(self):
         print('test demo2')
+
+    print('1111')
